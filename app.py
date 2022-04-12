@@ -1,23 +1,25 @@
 from flask import Flask
 import ASRService as asr
-import ServiceDetailsService as sds
+from ServicesModule import ServiceDetailsService as sds
 import UserStoriesService as uss
+import json
 
 app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "Hello, World!"
+    return "Hello World"
 
 #get meeting script
 @app.route("/meetingscript", methods=['POST'])
 def get_meeting_script():
-    return asr.test()
+    return asr.convert()
 
 #get services
 @app.route("/services", methods=['POST'])
 def get_services():
-    return sds.test()
+    response = json.dumps(sds.do(), indent=4)
+    return response
 
 #get stories
 @app.route("/userstories", methods=['POST'])
