@@ -1,5 +1,5 @@
-filepath = "audio_wav/"  # Input audio file path
-output_filepath = "Transcripts/"  # Final transcript path
+filepath = "../audio_wav/"  # Input audio file path
+output_filepath = "../Transcripts/"  # Final transcript path
 bucketname = "meeting_audios"  # Name of the bucket created in the step before
 
 # Import libraries

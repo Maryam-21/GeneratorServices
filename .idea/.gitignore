@@ -1,5 +1,6 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-audio_wav
-Transcripts
+/audio_wav
+/Transcripts
+/venv
