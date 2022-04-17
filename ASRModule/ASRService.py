@@ -1,4 +1,4 @@
-filepath = "audio_wav/"  # Input audio file path
+filepath = ""  # Input audio file path
 output_filepath = "Transcripts/"  # Final transcript path
 bucketname = "meeting_audios"  # Name of the bucket created in the step before
 
@@ -11,8 +11,7 @@ import wave
 import sys
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "credentials.json"
-def main():
-    audio_file_name = sys.argv[1]
+def convert(audio_file_name):
     transcript = google_transcribe(audio_file_name)
     transcript_filename = audio_file_name.split('.')[0] + '.txt'
     write_transcripts(transcript_filename,transcript)
@@ -100,4 +99,3 @@ def write_transcripts(transcript_filename,transcript):
     f.write(transcript)
     f.close()
 
-main()
