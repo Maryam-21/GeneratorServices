@@ -3,6 +3,7 @@ from flask import request
 from ASRModule import ASRService as asr
 from ServicesModule import ServiceDetailsService as sds
 from UserStoriesModule import UserStoriesService as uss
+from ServicesModule import data
 import json
 
 app = Flask(__name__)
@@ -19,8 +20,10 @@ def hello_world():
 @app.route("/meetingscript", methods=['POST'])
 def get_meeting_script():
     filepath = request.json['filepath']     #"ASRModule/audio_wav/batoul_meeting.wav"
-    response = json.dumps(asr.convert(filepath),indent=4)
-    return response
+    #response = json.dumps(asr.convert(filepath),indent=4)
+    #return response
+    print(filepath)
+    return json.dumps(data.getTestData('spotify'))
 
 #get services
 #request should include meeting script and actors
@@ -30,8 +33,10 @@ def get_meeting_script():
 #        }
 @app.route("/services", methods=['POST'])
 def get_services():
-    #meetingscript = request.json['meetingscript']
-    #actors = request.json['actors']
+    meetingscript = request.json['meetingscript']
+    actors = request.json['actors']
+    print(meetingscript)
+    print(actors)
     #response = json.dumps(sds.do(meetingscript,actors), indent=4)
     #return response
     return sds.do()
