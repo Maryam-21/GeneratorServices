@@ -30,10 +30,11 @@ def get_meeting_script():
 #        }
 @app.route("/services", methods=['POST'])
 def get_services():
-    meetingscript = request.json['meetingscript']
-    actors = request.json['actors']
-    response = json.dumps(sds.do(meetingscript,actors), indent=4)
-    return response
+    #meetingscript = request.json['meetingscript']
+    #actors = request.json['actors']
+    #response = json.dumps(sds.do(meetingscript,actors), indent=4)
+    #return response
+    return sds.do()
 
 #get stories
 @app.route("/userstories", methods=['POST'])

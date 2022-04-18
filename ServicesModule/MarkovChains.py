@@ -30,9 +30,9 @@ def read_file(file_path):
 def clean_txt(txtf):
     cleaned_txt = []
     txt = txtf.split(".")
-    print(txt)
+    #print(txt)
     for line in txt:
-        print(line)
+        #print(line)
         line = line.lower()
         line = re.sub(r"[,.\"\'!@#$%^&*(){}?/;`~:<>+=-\\]", "", line)
         tokens = word_tokenize(line)
@@ -103,9 +103,9 @@ meet="Good Morning News. How are you doing? How are you soon? It's our first fro
 def red(req,seed,l):
     req_arr=[]
     cm = clean_txt(req)
-    print('clean text: ',cm)
+    #print('clean text: ',cm)
     mm = make_markov_model(cm)
-    print('model: ',mm)
+    #print('model: ',mm)
     for i in range(20):
         req_arr.append(generate_req(mm, start=seed, limit=l))
     return req_arr
@@ -115,13 +115,13 @@ def red(req,seed,l):
     #print(arr[i])
 
 arr=red(meet,seed="user can",l=10)
-for i in range(10):
-    print(arr[i])
+#for i in range(10):
+    #print(arr[i])
 
 
-def print_hi(name):
+#def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    #print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 # Press the green button in the gutter to run the script.
 

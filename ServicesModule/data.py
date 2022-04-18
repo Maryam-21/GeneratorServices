@@ -21,15 +21,27 @@ def getTestData(name):
                     "the user can add employees information involved in the meeting to be able to add new confrenece rooms and update or delete"]
 
 
-    spotify = ["user should be able to search for music by name or genre or artist",
-               "he should also be able to like a song or a playlist",
-               "user should be able to perform regarding that part what is your idea regarding that we want to offer the user a",
-               "user should have a profile",
-               "yes that as well as a streaming platform for podcasts lets talk more in details about each",
-               "user should be able to like a song or a playlist",
-               "yes the profile should contain user data such as name email address liked"]
+    spotify = ["user should be able to discover music based on his profile and other users similar to himself let me clarify this a user should be able",
+               "user should have a profile yes the profile contain the profile should contain user data such as name email address liked songs and playlists okay great",
+               "user should be able to perform regarding that we want to offer the user should be able to discover music based on his profile and other",
+               "user should have a profile yes the profile should contain user data such as name email address liked songs and playlists okay great so the user",
+               "user should be able to perform regarding that part the user should be able to like a song or a playlist yes that as well as",
+               "user should be able to search for music by name or genre or artist he should also be able to discover music based on his profile",
+               "user should have a profile yes the profile should contain user data such as name email address liked songs and playlists okay great so the user ",
+               "spotify should offer yes there are more functionalities of less significance too we will discuss that in the process of developing spotify i am a cofounder",
+               "spotify should offer yes there are more functionalities of less significance too we will discuss that in the upcoming meetings the functionalities we talked about in",
+               "spotify should be an online platform for sharing and listening to music what are the main things that a user should have a profile yes the",
+               "spotify should be an online platform for sharing and listening to music what are the main functionalities that spotify should offer yes there are more functionalities",
+               "spotify should offer yes there are more functionalities of less significance too we will discuss that in the process of developing spotify i am a cofounder",
+               "spotify should offer yes there are more functionalities of less significance too we will discuss that in the process of developing spotify i am a cofounder",
+               "spotify should be an online platform for sharing and listening to music what are the main functionalities that spotify should be an online platform for sharing",
+               "spotify should offer yes there are more functionalities of less significance too we will discuss that in the upcoming meetings the functionalities we talked about in",
+               "profile should contain user data such as name email address liked songs and playlists okay great so the user should have a profile yes the profile",
+               "profile should contain user data such as name email address liked songs and playlists okay great so the user should have a profile yes the profile",
+               "profile should contain user data such as name email address liked songs and playlists okay great so the user should be able to like a song",
+               "profile should contain user data such as name email address liked songs and playlists okay great so the user should be able to discover music based"]
 
-    discourse = ["system would locate the freezer repair facilities within the highest ratings for the important criteria should the system return a list of preferred parts suppliers has",
+    carrepair = ["system would locate the freezer repair facilities within the highest ratings for the important criteria should the system return a list of preferred parts suppliers has",
                  "system would this play is a current ratings for the important criteria should the system return a list of repair facilities within the highest ratings for",
                  "system would locate the freezer repair facilities within the highest ratings for the preferred repair facility and the system would locate the freezer repair facilities within",
                  "system would display a blank set of ratings do you want to skip from one to five four three things okay great also the racing shall",
@@ -37,31 +49,23 @@ def getTestData(name):
                  "system would this play is a current ratings for the preferred repair facility and the system will retain the available resources and suppliers returned from the",
                  "system would locate the freezer repair facilities within the highest ratings for the important criteria should the system would locate the freezer repair facilities within the"]
 
-    discourset = ["system would display a blank set of ratings do you want to skip from one to five four three things okay great also the racing shall",
-                  "system would this play is a current ratings for the preferred repair facility and then fill in the information for the users list of repair facilities",
-                  "system would locate the freezer repair facilities within the highest ratings for the important criteria should the system would display a blank set of ratings do",
-                  "system would locate the freezer repair facilities within the radius of the preferred lets talk about what would you like me to take the time to",
-                  "system would locate the freezer repair facilities within the radius of the preferred lets talk about what would you like me to take the time to",
-                  "system would locate the freezer repair facilities within the radius of the vehicle location should maybe include street address city and states unknown yes and also",
-                  "system would resolve the zip code for the cycle sports shouldnt take much to whats the maximum use except it should be between and miles and",
-                  "system would locate the freezer repair facilities within the radius of the vehicle location should maybe include street address city and states unknown yes and also"]
-
-    discourseth = ["system would this play is a current ratings for the cycle sports shouldnt take much to whats the maximum use except it should be between and",
-                  "system would resolve the zip code right yes exactly and of course the system automatically search for all suppliers do the users could you tell me",
-                  "system would this play is a current ratings for the users list of supplies for and supplies yes what should happen if the estimator couldnt find",
-                  "system would this play is a current ratings for the street address city and states unknown yes and also there should be no more than seconds",
-                  "system would resolve the zip code for the important criteria should the system return a list of repair facilities within the radius of the preferred lets",
-                  "system would resolve the zip code for the street address city and states unknown yes and also there should be between and miles and then the",
-                  "system would this play is a current ratings for the estimators preferred board suppliers with in there if the user enters the users vehicle should include",
-                  "system would resolve the zip code right yes exactly and of course the system will retain the available resources and suppliers returned from the search and"]
+    health = ["user can also write whatever he wants in his blog as long as it means the applications policy whats the address for the sea can we",
+              "user can choose whether he wants what does a room its a private face to people feel more free to share their thoughts the rooms edmonds",
+              "user can follow unfollow hide orphan users the application should suggest users with similar cases to login users in order to connect a user can choose",
+              "user can follow unfollow hide orphan users the application should suggest users with similar cases to login users in order to connect a user can also",
+              "user can also write whatever he wants in his blog as long as it means the applications policy whats the address for the sea can we",
+              "user can follow unfollow hide orphan users the application should suggest users with similar cases to login users in order to connect a user can choose",
+              "user can also write whatever he wants in his blog as long as it means the applications policy whats the address for the sea can we",
+              "user can follow unfollow hide orphan users the application should suggest users with similar cases to login users in order to connect a user can choose",
+              "user can choose whether he wants in his blog as long as it means the applications policy whats the address for the tcsd community it should",
+              "user can follow unfollow hide orphan users the application should suggest users with similar cases to login users in order to connect a user can choose"]
 
     if name == "cr":
         return confrenceroom
     if name == "spotify":
         return spotify
-    if name == "discourse":
-        return discourse
-    if name == "discourset":
-        return discourset
-    if name == "discourseth":
-        return discourseth
+    if name == "carrepair":
+        return carrepair
+    if name == "health":
+        return health
+
