@@ -14,8 +14,8 @@ from nltk.corpus import stopwords
 import random
 
 file_path = "req.txt"
-actors = ["user", "system", "spotify", "profile", "organizer", "users", "patients"]
-verbs = ["should", "could", "can", "shall", "must", "would", "will", "to", "who"]
+actors = ["user", "system", "spotify", "profile"]
+verbs = ["should", "could", "can", "shall", "must", "would", "will"]
 
 
 def read_file(file_path):
@@ -32,8 +32,8 @@ def read_file(file_path):
 
 def clean_txt(meetingscript):
     cleaned_txt = []
-    txt = meetingscript.split(".")
-    # txt = meetingscript
+    # txt = meetingscript.split(".")
+    txt = meetingscript
     # print(txt)
     for line in txt:
         # print(line)
@@ -116,28 +116,24 @@ def gen_seedelements():
 
 def services(meetingscript, limit=12):
     srvs_arr = []
-    cm = clean_txt(meetingscript)
-    # cm = clean_txt(read_file(file_path))
+    # cm = clean_txt(meetingscript)
+    cm = clean_txt(read_file(file_path))
     # print('clean text: ', cm)
     mm = make_markov_model(cm)
     # print('model: ', mm)
     seedelements = gen_seedelements()
     for seed in seedelements:
         if seed in mm:
-            # print(mm[seed], " ", len(mm[seed]))
+            print(mm[seed], " ", len(mm[seed]))
             x = len(mm[seed]) * 3
+            print(x)
             i = 0
-            z = 0
             while i < x:
-                z += 1
                 # srvs_arr.append(generate_service(mm, start=seed, limit=limit))
                 servs = generate_service(mm, start=seed, limit=limit)
                 if servs not in srvs_arr:
                     srvs_arr.append(servs)
                     i += 1
-                if z > 80:
-                    # print("hi ",seed)
-                    break
         else:
             continue
     return srvs_arr
@@ -150,7 +146,7 @@ for s in arr:
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
-     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 
 # Press the green button in the gutter to run the script.
