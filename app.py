@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask import request
 from ASRModule import ASRService as asr
 from ServicesModule import ServiceDetailsService as sds
@@ -7,6 +8,7 @@ from ServicesModule import data
 import json
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def hello_world():
@@ -31,15 +33,15 @@ def get_meeting_script():
 #         'meetingscript': "",
 #         'actors': ['x','y','z']
 #        }
-@app.route("/services", methods=['POST'])
+@app.route("/services", methods=['POST','GET'])
 def get_services():
-    meetingscript = request.json['meetingscript']
-    actors = request.json['actors']
-    print(meetingscript)
-    print(actors)
+    #meetingscript = request.json['meetingscript']
+    #actors = request.json['actors']
+    #print(meetingscript)
+    #print(actors)
     #response = json.dumps(sds.do(meetingscript,actors), indent=4)
     #return response
-    return sds.do()
+    return json.dumps(sds.do())
 
 #get stories
 @app.route("/userstories", methods=['POST'])

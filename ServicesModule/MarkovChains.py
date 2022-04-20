@@ -20,8 +20,8 @@ verbs = ["should", "could", "can", "shall", "must", "would", "will"]
 
 def read_file(file_path):
     txt = []
-    my_file = open(file_path, "r")
-    txt = my_file.readlines()
+    #my_file = open(file_path, "r")
+    #txt = my_file.readlines()
     return txt
 
 
