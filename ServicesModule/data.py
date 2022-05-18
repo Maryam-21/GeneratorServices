@@ -198,10 +198,37 @@ def getTestData(name):
         "patients should avoid his username fast with phone number gender his birthday the year of his case and whether he is under a doctors supervision or"
     ]
 
+    spotify2 = [
+        "user should be able to search for music by name and artist the user should be able to see the top songs played in the system",
+        "user should be able to choose a specific genre from the genres available in the system for the acceptance criteria the user should be able to",
+        "user should be able to search for music by name and artist the user should be able to discover music based on his profile and browse",
+        "user should be able to choose a specific genre from the genres available in the system is in the systems database otherwise the system to view",
+        "user should be able to go throw a navigation menu to be able to discover music based on his profile as well as the system should",
+        "user should be able to go throw a navigation menu to be able to go throw a navigation menu to be able to choose a specific",
+        "user should be able to specify whether he wants to display all results songs or artists using buttons displayed under the seach box a user should",
+        "user should be able to go throw a navigation menu to be able to search for music by name genre or artist great do you have",
+        "user should be registered and the artists in the results should be able to specify whether he wants to display all results in a list by",
+        "user shall see the top songs if he does not have any liked songs search history and at least five recently played songs do you like",
+        "user shall be able to choose to play a song or open any artists profile from the search box and by typing any input the results",
+        "user shall be able to search for music by name genre or artist great do you have any liked songs search history or at least five",
+        "user shall see the top songs played in the system for the acceptance criteria in each case in case of searching by name and the artists",
+        "user shall be able to search for music by name and artist the user should be updated the user should be able to choose a specific",
+        "user shall see the search box and by typing any input the results should be updated the user should be able to see the search box",
+        "system should keep track for users activity including activities like liked songs search history or at least five recently played songs do you like to recommed",
+        "system should keep track for users activity including activities like liked songs search history or at least five recently played songs as for the user the",
+        "system should keep track for users activity including activities like liked songs search history and at least five recently played songs as for the acceptance criteria",
+        "system shall print no matches found what about the acceptance criteria what should we consider for the acceptance criteria in each case in case of searching",
+        "system shall print no matches found what about the acceptance criteria the user should be able to go throw a navigation menu to be able to",
+        "system shall print no matches found what about the acceptance criteria in each case in case of searching by genre the user the user should see"
+        ]
+
+
     if name == "cr":
         return confrenceroom
     if name == "spotify":
         return spotify
+    if name == "spotify2":
+        return spotify2
     if name == "carrepair":
         return carrepair
     if name == "health":
