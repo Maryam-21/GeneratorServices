@@ -33,7 +33,7 @@ def getServices():
                 servicesdetails[t] = services
                 keywords = kw_extractor.extract_keywords(t)
                 if keywords[0][0] in servicesdetails2.keys():
-                    servicesdetails2[keywords[0][0]].append(t)
+                        servicesdetails2[keywords[0][0]].append(t)
                 else:
                     servicesdetails2[keywords[0][0]]= [t]
 
