@@ -1,6 +1,6 @@
-filepath = ""  # Input audio file path
-output_filepath = "Transcripts/"  # Final transcript path
-bucketname = "meeting_audios"  # Name of the bucket created in the step before
+filepath = "ASRModule/audio_wav/"  # Input audio file path
+output_filepath = "ASRModule/Transcripts/"  # Final transcript path
+bucketname = "meetings_audios"  # Name of the bucket created in the step before
 
 # Import libraries
 from pydub import AudioSegment
@@ -8,13 +8,16 @@ from google.cloud import speech
 from google.cloud import storage
 import os
 import wave
-import sys
+import regex as re
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "credentials.json"
-def convert(audio_file_name):
-    transcript = google_transcribe(audio_file_name)
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "ASRModule/credentials.json"
+
+def getSpeechToText(audio_file_name, audioKeywords=None):
+    transcript, stamps = google_transcribe(audio_file_name, audioKeywords)
     transcript_filename = audio_file_name.split('.')[0] + '.txt'
-    write_transcripts(transcript_filename,transcript)
+    write_transcripts(transcript_filename, str(transcript))
+    return stamps
+
 
 def mp3_to_wav(audio_file_name):
     if audio_file_name.split('.')[1] == 'mp3':    
@@ -32,7 +35,7 @@ def frame_rate_channel(audio_file_name):
         frame_rate = wave_file.getframerate()
         channels = wave_file.getnchannels()
         return frame_rate,channels
-
+    
 def upload_blob(bucket_name, source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""
     storage.blob._DEFAULT_CHUNKSIZE = 2 * 1024 * 1024  # 2 MB
@@ -52,9 +55,9 @@ def delete_blob(bucket_name, blob_name):
 
     blob.delete()
 
-def google_transcribe(audio_file_name):
+def google_transcribe(audio_file_name, audioKeywords):
     file_name = filepath + audio_file_name
-    print("Transcripting audio file: ", file_name)
+
     #mp3_to_wav(file_name)
     frame_rate, channels = frame_rate_channel(file_name)
     
@@ -65,11 +68,13 @@ def google_transcribe(audio_file_name):
     source_file_name = filepath + audio_file_name
     destination_blob_name = audio_file_name
     
-    #print("Uploading audio commented")
+    # Audio keywords that will help to extract beneficial sentences to save their timestamps
+    audioKeywords = ['user', 'system', 'projectTitle', 'projectDomain', 'actors', 'meetingTitle']  # They are variables but set to string so it can run
+    
+    print("Uploading audio commented")
     #upload_blob(bucket_name, source_file_name, destination_blob_name)  # Uploading audio file in google cloud 
     
     gcs_uri = 'gs://' + bucketname + '/' + audio_file_name
-    transcript = ''
     
     client = speech.SpeechClient()
     audio = speech.RecognitionAudio(uri=gcs_uri)
@@ -79,6 +84,7 @@ def google_transcribe(audio_file_name):
     sample_rate_hertz=frame_rate,
     language_code='en-US',
     enable_automatic_punctuation=True,
+    enable_word_time_offsets=True,
     )
 
     # Detects speech in the audio file
@@ -86,16 +92,23 @@ def google_transcribe(audio_file_name):
     
     print("Waiting for operation to complete...")
     response = operation.result(timeout=90)
-    result = response.results[-1]
-    
+    sentsTimeStamp = []
+    transcript = ''
     for result in response.results:
         transcript += result.alternatives[0].transcript
+        sents = re.split('[.!?]', result.alternatives[0].transcript)
+        for sent in sents:
+            if any(word in sent.lower() for word in audioKeywords):
+                first_word = sent.split()[0]
+                for word_info in result.alternatives[0].words:
+                    if first_word == word_info.word:
+                        sentsTimeStamp.append((sent, word_info.start_time.seconds))
+                        break
     
     #delete_blob(bucket_name, destination_blob_name)
-    return transcript
+    return transcript, sentsTimeStamp
 
 def write_transcripts(transcript_filename,transcript):
     f= open(output_filepath + transcript_filename,"w+")
     f.write(transcript)
     f.close()
-
