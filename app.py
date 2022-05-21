@@ -25,7 +25,7 @@ def get_meeting_script():
     #response = json.dumps(asr.convert(filepath),indent=4)
     #return response
     print(filepath)
-    return json.dumps(data.getTestData('spotify'))
+    return json.dumps(data.getTestData("spotifyT"))
 
 #get services
 #request should include meeting script and actors
