@@ -1,4 +1,6 @@
 def getTestData(name):
+    spotifyTranscript = ["Good afternoon. It's a pleasure to meet with you today. The charger is mine. Please tell me briefly about your role in the process of developing Spotify. I'm a co-founder of Spotify. I came up with the idea and hope that you and your team's help. That's great. Thank you for the clarification. We are here today to discuss the requirements of project Spotify. I want to give you an idea about the intended outputs of this meeting. We should clarify the main goal of spotify and the most important requirements that must be present in order for Spotify to function properly. Sounds great. Let's start. And you stayed the general idea behind Spotify? But if I should be an online platform for sharing and listening to music as well as streaming platform for podcast. Let's talk more in details about each of these. Listening to music. What are the main things that users should be able to perform regarding the poor? The unit should be able to search for music by name or John or or you should also be able to discover music please on his profile and other users similar to massage. It may clear advises users who have a profile. Yes, the coupon is a crucial part of the application. What's Deborah, 520? The coupon should contain user data such as name, email, address, like songs and playlist. Okay, great. I should be able to like a song playlist. Yes, that as well as create a playlist and add songs to it. Okay, that's very good. Let's move on to the Africa sport. What is your idea regarding. We want to offer the user and number of podcast that he can browse and listen to. Okay. So are these the maintenance is that Spotify Shuffle? yes, there are more functionality is of less significance to Okay, we will discuss that in the upcoming meetings. As we talked about, in this meeting would be written and sent for your prediction in a couple of days. Okay. There may also be a follow-up meeting if that would suit you to discuss didn't lose points or action. Great. I will leave my contacts. You can reach out if you need to add anything or ask any questions. Great. Thank you. Thank you for your time. We meet again soon."]
+
     #without discourse
     confrenceroom = ["user can add employees information involved in the meeting and the organizers i think we can use and smss sounds good but will the organizers be",
                     "user can add employees information involved in the meeting to be notified with the equipment transport request do you have a specific one using specific details",
@@ -223,6 +225,7 @@ def getTestData(name):
         ]
 
 
+
     if name == "cr":
         return confrenceroom
     if name == "spotify":
@@ -241,3 +244,5 @@ def getTestData(name):
         return dspotify
     if name == "dcr":
         return dconferenceroom
+    if name == "spotifyT":
+        return spotifyTranscript

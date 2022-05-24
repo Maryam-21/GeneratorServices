@@ -8,6 +8,7 @@ stopwords = set(w.rstrip() for w in open('ServicesModule/stopwords.txt'))
 def getServices():
 
     text = data.getTestData("spotify2")                                   # Meeting to be processed
+
     servicesdetails = {}                                            #dictionary for different services and their details
     servicesdetails2 = {}                                           #dictionary for different services and their details with a unique title and several details
     sentsOnly = []
@@ -37,8 +38,8 @@ def getServices():
                 else:
                     servicesdetails2[keywords[0][0]]= [t]
 
-
     return servicesdetails2
+
 
 
 def subjectverbobjectrule(text):
