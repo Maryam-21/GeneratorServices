@@ -1,2 +1,3 @@
 venv/
 ASRModule/audio_wav/
+__pycache__/

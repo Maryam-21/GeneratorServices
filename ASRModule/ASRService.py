@@ -1,5 +1,3 @@
-filepath = "ASRModule/audio_wav/"  # Input audio file path
-output_filepath = "ASRModule/Transcripts/"  # Final transcript path
 bucketname = "meetings_audios"  # Name of the bucket created in the step before
 
 # Import libraries
@@ -12,14 +10,15 @@ import regex as re
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "ASRModule/credentials.json"
 
-def getSpeechToText(audio_file_name, audioKeywords=None):
-    transcript, stamps = google_transcribe(audio_file_name, audioKeywords)
-    transcript_filename = audio_file_name.split('.')[0] + '.txt'
-    write_transcripts(transcript_filename, str(transcript))
-    return stamps
+def getSpeechToText(audioFullpath, p, d, a, m):  # ASRModule/audio_wav/batoul.wav
+    audioKeywords = ['user', 'system', p, d, a, m]
+    audio_filename = re.findall("[.\w]+", audioFullpath)[-1]
+    print(audioFullpath)
+    print(audio_filename)
+    json_result = google_transcribe(audio_filename, audioFullpath, audioKeywords)
+    return json_result
 
-
-def mp3_to_wav(audio_file_name):
+def mp3_to_wav(audio_file_name, ):
     if audio_file_name.split('.')[1] == 'mp3':    
         sound = AudioSegment.from_mp3(audio_file_name)
         audio_file_name = audio_file_name.split('.')[0] + '.wav'
@@ -55,9 +54,7 @@ def delete_blob(bucket_name, blob_name):
 
     blob.delete()
 
-def google_transcribe(audio_file_name, audioKeywords):
-    file_name = filepath + audio_file_name
-
+def google_transcribe(audio_file_name, file_name, audioKeywords):
     #mp3_to_wav(file_name)
     frame_rate, channels = frame_rate_channel(file_name)
     
@@ -65,11 +62,11 @@ def google_transcribe(audio_file_name, audioKeywords):
         stereo_to_mono(file_name)
     
     bucket_name = bucketname
-    source_file_name = filepath + audio_file_name
+    source_file_name = file_name
     destination_blob_name = audio_file_name
     
     # Audio keywords that will help to extract beneficial sentences to save their timestamps
-    audioKeywords = ['user', 'system', 'projectTitle', 'projectDomain', 'actors', 'meetingTitle']  # They are variables but set to string so it can run
+    #audioKeywords = ['user', 'system', 'projectTitle', 'projectDomain', 'actors', 'meetingTitle']  # They are variables but set to string so it can run
     
     print("Uploading audio commented")
     #upload_blob(bucket_name, source_file_name, destination_blob_name)  # Uploading audio file in google cloud 
@@ -104,11 +101,9 @@ def google_transcribe(audio_file_name, audioKeywords):
                     if first_word == word_info.word:
                         sentsTimeStamp.append((sent, word_info.start_time.seconds))
                         break
-    
+    result = {
+        'transcript': transcript,
+        'sentsTimeStamp': sentsTimeStamp
+    }
     #delete_blob(bucket_name, destination_blob_name)
-    return transcript, sentsTimeStamp
-
-def write_transcripts(transcript_filename,transcript):
-    f= open(output_filepath + transcript_filename,"w+")
-    f.write(transcript)
-    f.close()
+    return result

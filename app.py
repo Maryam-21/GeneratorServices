@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_cors import CORS
+#from flask_cors import CORS
 from flask import request
 from ASRModule import ASRService as asr
 from ServicesModule import ServiceDetailsService as sds
@@ -8,7 +8,7 @@ from ServicesModule import data
 import json
 
 app = Flask(__name__)
-CORS(app)
+#CORS(app)
 
 @app.route("/")
 def hello_world():
@@ -21,11 +21,15 @@ def hello_world():
 #        }
 @app.route("/meetingscript", methods=['POST'])
 def get_meeting_script():
-    filepath = request.json['filepath']     #"ASRModule/audio_wav/batoul_meeting.wav"
-    #response = json.dumps(asr.convert(filepath),indent=4)
-    #return response
-    print(filepath)
-    return json.dumps(data.getTestData('spotify'))
+    filepath = request.json['filepath']
+    p = request.json["projectTitle"]
+    d = request.json["domain"]
+    a = request.json["actors"]
+    m = request.json["meetingTitle"]
+    #filepath = "ASRModule/audio_wav/spotify_meeting.wav"  # ex. "ASRModule/audio_wav/batoul_meeting.wav"
+    response = json.dumps(asr.getSpeechToText(filepath, p, d, a, m),indent=4)
+    return response
+    #return json.dumps(data.getTestData('spotify'))
 
 #get services
 #request should include meeting script and actors
@@ -33,6 +37,7 @@ def get_meeting_script():
 #         'meetingscript': "",
 #         'actors': ['x','y','z']
 #        }
+
 @app.route("/services", methods=['POST','GET'])
 def get_services():
     #meetingscript = request.json['meetingscript']
