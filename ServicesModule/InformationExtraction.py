@@ -5,9 +5,9 @@ import yake
 nlp = spacy.load('en_core_web_sm', disable=['ner', 'textcat'])
 stopwords = set(w.rstrip() for w in open('ServicesModule/stopwords.txt'))
 
-def getServices():
+def getServices(text):
 
-    text = data.getTestData("spotify2")                                   # Meeting to be processed
+    #text = data.getTestData("spotify2")                                   # Meeting to be processed
 
     servicesdetails = {}                                            #dictionary for different services and their details
     servicesdetails2 = {}                                           #dictionary for different services and their details with a unique title and several details

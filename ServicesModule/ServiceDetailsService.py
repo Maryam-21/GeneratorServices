@@ -1,7 +1,11 @@
 import ServicesModule.InformationExtraction as IE
 import ServicesModule.MarkovChains as MC
 #import PreprocessingModule.discourse as disc
-def do():
+import ServicesModule.AssignTimestamps as AT
+def do(meetingscript, actors, timeStamps):
     #editedmeetingscript = disc.main(meetingscript)
-    #text = MC.get(meetingscript,actors) #meeting script #actors
-    return IE.getServices()
+    sentences = MC.services(meetingscript) #meeting script #actors
+    print(sentences)
+    serviceDetails = IE.getServices(sentences)
+    serviceDetailsStamped = AT.AssignTimestamps(serviceDetails, timeStamps)
+    return serviceDetailsStamped

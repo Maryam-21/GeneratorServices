@@ -14,13 +14,12 @@ def setTranscripts():
 	with open("./Firebase/Transcripts.json", "r") as f:
 		file_contents = json.load(f)
 	ref.push(file_contents)
-	#important Note
 
-	#-----------
-	#delete Transcript content after pushing
 	open('./Firebase/Transcripts.json', 'w').close()
 
 def getTranscripts(MeetingID):
 	ref = db.reference("/Stamps")
 	stamps = ref.order_by_child("meetingID").equal_to(MeetingID).get()
+	values = list(stamps.items())
+	stamps = values[0][1]['timeStamps']
 	return stamps #type of stamps (OrderedDictionary)

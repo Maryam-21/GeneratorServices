@@ -4,9 +4,9 @@ import ASRModule.ASRService as asr
 
 nlp = spacy.load("en_core_web_sm")
 
-def AssignTimestamps():
-    servicesdetails = getServicesdetails()
-    stamps = getStamps()
+def AssignTimestamps(servicesdetails, stamps):
+    #servicesdetails = getServicesdetails()
+    #stamps = getStamps()
     minscore = 0.5
     out = {}
     for i in servicesdetails:
@@ -34,6 +34,7 @@ def AssignTimestamps():
                 "stamp" : index[1]        
             }]
     print(out)
+    return out
 
 def getServicesdetails():  # Markov output with title
     f = open('output.json')
