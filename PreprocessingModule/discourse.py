@@ -1,17 +1,9 @@
-filepath = "../ASRModule/Transcripts/"  # Transcript path
-
 from allennlp.predictors.predictor import Predictor
-import sys
 
 model_url = "https://storage.googleapis.com/allennlp-public-models/coref-spanbert-large-2020.02.27.tar.gz"
 predictor = Predictor.from_path(model_url)
-def main():
-    text_filename = sys.argv[1]
-    final_filepath = filepath + text_filename
-    text = open(final_filepath, "r").read()
-    write_transcripts(final_filepath, coref_resolved(text))  # Resolved text
 
-def coref_resolved(document: str) -> str:
+def coref_resolved(document) -> str:  # Resolved text
     spacy_document = predictor._spacy(document)  # spaCy Doc
     clusters = predictor.predict(document).get("clusters")
     return replace_corefs(spacy_document, clusters)
@@ -58,10 +50,4 @@ def core_logic_part(document, coref, resolved, mention_span):
     for i in range(coref[0] + 1, coref[1] + 1):
         resolved[i] = ""
     return resolved
-
-def write_transcripts(final_filepath, transcript):
-    f= open(final_filepath,"w+")
-    f.write(transcript)
-    f.close()
-
-main()
+    
