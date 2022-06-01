@@ -1,24 +1,25 @@
 bucketname = "meetings_audios"  # Name of the bucket created in the step before
 
 # Import libraries
+import json
 from pydub import AudioSegment
 from google.cloud import speech
 from google.cloud import storage
 import os
 import wave
 import regex as re
+from ..Firebase import FireBase as fb
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "ASRModule/credentials.json"
 
-def getSpeechToText(audioFullpath, projectTitle, domain, actors, meetingTitle):
+def getSpeechToText(audio_filename, frame_rate, projectTitle, domain, actors, meetingTitle):
     actors = actors.split(',')
     audioKeywords = ['user', 'system', projectTitle, domain, meetingTitle]
     audioKeywords.extend(actors)
-    audio_filename = re.findall("[.\w]+", audioFullpath)[-1]
-    json_result = google_transcribe(audio_filename, audioFullpath, audioKeywords)
+    json_result = google_transcribe(audio_filename, frame_rate, audioKeywords)
     return json_result
 
-def mp3_to_wav(audio_file_name, ):
+def mp3_to_wav(audio_file_name):
     if audio_file_name.split('.')[1] == 'mp3':    
         sound = AudioSegment.from_mp3(audio_file_name)
         audio_file_name = audio_file_name.split('.')[0] + '.wav'
@@ -46,16 +47,30 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 
     blob.upload_from_filename(source_file_name)
 
-def upload_to_cloud(audio_file_name, file_name):
-    mp3_to_wav(file_name)
-    frame_rate, channels = frame_rate_channel(file_name)
+def upload_to_cloud(audioFullpath):
+    audio_filename = re.findall("[.\w]+", audioFullpath)[-1]
+    mp3_to_wav(audioFullpath)
+    frame_rate, channels = frame_rate_channel(audioFullpath)
     
     if channels > 1:
-        stereo_to_mono(file_name)
+        stereo_to_mono(audioFullpath)
     
     print("Uploading audio commented")
     # Parameter 1: bucket name, Parameter 2: source filename, Parameter 3: destination blob name
-    upload_blob(bucketname, file_name, audio_file_name)  # Uploading audio file in google cloud 
+    upload_blob(bucketname, audioFullpath, audio_filename)  # Uploading audio file in google cloud
+    
+    # Saving frame rate in database for later use
+    framerate = {
+        'meetingID': id,
+        'framerate': frame_rate
+    }
+    result = json.dumps(framerate, sort_keys=True,
+                                indent=4, separators=(',', ': '))
+    
+    f = open('..Firebase/framerate.json', "a")
+    f.write(result)
+    f.close()
+    fb.setFrameRate()
     return
     
 def delete_blob(bucket_name, blob_name):
@@ -66,10 +81,7 @@ def delete_blob(bucket_name, blob_name):
 
     blob.delete()
 
-def google_transcribe(audio_file_name, file_name, audioKeywords):
-    upload_to_cloud(audio_file_name, file_name)
-    frame_rate, channels = frame_rate_channel(file_name)
-    
+def google_transcribe(audio_file_name, frame_rate, audioKeywords):
     gcs_uri = 'gs://' + bucketname + '/' + audio_file_name
     
     client = speech.SpeechClient()
@@ -104,5 +116,5 @@ def google_transcribe(audio_file_name, file_name, audioKeywords):
         'transcript': transcript,
         'sentsTimeStamp': sentsTimeStamp
     }
-    #delete_blob(bucket_name, destination_blob_name)
+    #delete_blob(bucket_name, audio_file_name)
     return result

@@ -30,8 +30,8 @@ def get_meeting_script():
     id = request.json["meetingID"]
 
     #filepath = "ASRModule/audio_wav/spotify_meeting.wav"  # ex. "ASRModule/audio_wav/batoul_meeting.wav"
-
-    result = asr.getSpeechToText(filepath, p, d, a, m)
+    frame_rate = fb.getFrameRate(id)
+    result = asr.getSpeechToText(filepath, frame_rate, p, d, a, m)
 
     timeStamps = {
         'meetingID': id,
