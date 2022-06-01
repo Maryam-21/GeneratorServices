@@ -10,11 +10,11 @@ import regex as re
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "ASRModule/credentials.json"
 
-def getSpeechToText(audioFullpath, p, d, a, m):  # ASRModule/audio_wav/batoul.wav
-    audioKeywords = ['user', 'system', p, d, a, m]
+def getSpeechToText(audioFullpath, projectTitle, domain, actors, meetingTitle):
+    actors = actors.split(',')
+    audioKeywords = ['user', 'system', projectTitle, domain, meetingTitle]
+    audioKeywords.extend(actors)
     audio_filename = re.findall("[.\w]+", audioFullpath)[-1]
-    print(audioFullpath)
-    print(audio_filename)
     json_result = google_transcribe(audio_filename, audioFullpath, audioKeywords)
     return json_result
 
@@ -46,6 +46,18 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 
     blob.upload_from_filename(source_file_name)
 
+def upload_to_cloud(audio_file_name, file_name):
+    mp3_to_wav(file_name)
+    frame_rate, channels = frame_rate_channel(file_name)
+    
+    if channels > 1:
+        stereo_to_mono(file_name)
+    
+    print("Uploading audio commented")
+    # Parameter 1: bucket name, Parameter 2: source filename, Parameter 3: destination blob name
+    upload_blob(bucketname, file_name, audio_file_name)  # Uploading audio file in google cloud 
+    return
+    
 def delete_blob(bucket_name, blob_name):
     """Deletes a blob from the bucket."""
     storage_client = storage.Client()
@@ -55,21 +67,8 @@ def delete_blob(bucket_name, blob_name):
     blob.delete()
 
 def google_transcribe(audio_file_name, file_name, audioKeywords):
-    #mp3_to_wav(file_name)
+    upload_to_cloud(audio_file_name, file_name)
     frame_rate, channels = frame_rate_channel(file_name)
-    
-    if channels > 1:
-        stereo_to_mono(file_name)
-    
-    bucket_name = bucketname
-    source_file_name = file_name
-    destination_blob_name = audio_file_name
-    
-    # Audio keywords that will help to extract beneficial sentences to save their timestamps
-    #audioKeywords = ['user', 'system', 'projectTitle', 'projectDomain', 'actors', 'meetingTitle']  # They are variables but set to string so it can run
-    
-    print("Uploading audio commented")
-    #upload_blob(bucket_name, source_file_name, destination_blob_name)  # Uploading audio file in google cloud 
     
     gcs_uri = 'gs://' + bucketname + '/' + audio_file_name
     
