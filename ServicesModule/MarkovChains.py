@@ -14,7 +14,7 @@ from nltk.corpus import stopwords
 import random
 
 file_path = "req.txt"
-actors = ["user", "system", "spotify", "profile", "organizer", "users", "patients"]
+actors = ["user", "system", "spotify", "profile", "organizer", "users"]
 verbs = ["should", "could", "can", "shall", "must", "would", "will", "to", "who"]
 
 
