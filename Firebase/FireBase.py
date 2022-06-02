@@ -23,17 +23,3 @@ def getTranscripts(MeetingID):
 	values = list(stamps.items())
 	stamps = values[0][1]['timeStamps']
 	return stamps #type of stamps (OrderedDictionary)
-
-def setFrameRate():
-	ref = db.reference("/Framerate")
-
-	with open("./Firebase/framerate.json", "r") as f:
-		file_contents = json.load(f)
-	ref.push(file_contents)
-
-	open('./Firebase/framerate.json', 'w').close()
-
-def getFrameRate(MeetingID):
-	ref = db.reference("/Framerate")
-	framerate = ref.order_by_child("meetingID").equal_to(MeetingID).get()["framerate"]
-	return framerate
