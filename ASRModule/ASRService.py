@@ -1,7 +1,6 @@
 bucketname = "meetings_audios"  # Name of the bucket created in the step before
 
 # Import libraries
-import json
 from pydub import AudioSegment
 from google.cloud import speech
 from google.cloud import storage
@@ -10,14 +9,19 @@ import wave
 import regex as re
 from Firebase import FireBase as fb
 
+
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "ASRModule/credentials.json"
 
-def getSpeechToText(audio_filename, frame_rate, projectTitle, domain, actors, meetingTitle):
-    actors = actors.split(',')
-    audioKeywords = ['user', 'system', projectTitle, domain, meetingTitle]
-    audioKeywords.extend(actors)
-    json_result = google_transcribe(audio_filename, frame_rate, audioKeywords)
-    return json_result
+def getSpeechToText(audio_filepath, frame_rate, projectTitle="", domain="", actors="", meetingTitle=""):
+    if projectTitle == "":
+        audioKeywords = []
+    else:
+        actors = actors.split(',')
+        audioKeywords = ['user', 'system', projectTitle.lower(), domain.lower(), meetingTitle.lower()]
+        audioKeywords.extend(actors)
+
+    audio_filename = re.findall("[.\w]+", audio_filepath)[-1]
+    return google_transcribe(audio_filename, frame_rate, audioKeywords)
 
 def stereo_to_mono(audio_file_name):
     sound = AudioSegment.from_wav(audio_file_name)
@@ -62,8 +66,9 @@ def upload_to_cloud(audioFullpath, audio_filename):
     # Parameter 1: bucket name, Parameter 2: source filename, Parameter 3: destination blob name
     upload_blob(bucketname, audioFullpath, audio_filename)  # Uploading audio file in google cloud
     
-    # Saving frame rate in database for later use
-    return 1
+
+    return frame_rate
+
     
 def delete_blob(bucket_name, blob_name):
     """Deletes a blob from the bucket."""
