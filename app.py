@@ -15,11 +15,14 @@ CORS(app)
 def hello_world():
     return "Hello World"
 
-#get meeting script
-#request should include audio file path
-#json : {
-#         'filepath': "ASRModule/audio_wav/batoul_meeting.wav"
-#        }
+#upload audio
+@app.route("/asr/upload", methods=['POST'])
+def upload_to_cloud():
+    filepath = request.json['filepath']
+    filename = request.json['filename']
+    return asr.upload_to_cloud(filepath, filename)
+
+#get_meetingscript
 @app.route("/meetingscript", methods=['POST'])
 def get_meeting_script():
     filepath = request.json['filepath']
@@ -27,10 +30,10 @@ def get_meeting_script():
     d = request.json["domain"]
     a = request.json["actors"]
     m = request.json["meetingTitle"]
-    id = request.json["meetingID"]
-
+    id = 4#request.json["meetingID"]
+    frame_rate = upload_to_cloud(filepath)
     #filepath = "ASRModule/audio_wav/spotify_meeting.wav"  # ex. "ASRModule/audio_wav/batoul_meeting.wav"
-    frame_rate = fb.getFrameRate(id)
+    #frame_rate = fb.getFrameRate(id)
     result = asr.getSpeechToText(filepath, frame_rate, p, d, a, m)
 
     timeStamps = {
@@ -46,34 +49,26 @@ def get_meeting_script():
     fb.setTranscripts()
     response = json.dumps(result['transcript'],indent=4)
     return response
-    #return json.dumps(data.getTestData('spotify'))
-    #response = json.dumps(asr.convert(filepath),indent=4)
-    #return response
 
-#get services
-#request should include meeting script and actors
-#json : {
-#         'meetingscript': "",
-#         'actors': ['x','y','z']
-#        }
-
+#get Services
 @app.route("/services", methods=['POST','GET'])
 def get_services():
     meetingscript = request.json['meetingscript']
     actors = request.json['actors']
     meetingID = request.json['meetingID']
     timeStamps = fb.getTranscripts(meetingID)
-    #print(meetingscript)
-    #print(actors)
-    #response = json.dumps(sds.do(meetingscript,actors), indent=4)
-    #return response
     return json.dumps(sds.do(meetingscript, actors, timeStamps))
 
 #get stories
 @app.route("/userstories", methods=['POST'])
 def get_user_stories():
-    return uss.test()
-
+    services = request.json['services']
+    filepath = request.json['filepath']
+    if filepath:
+        frame_rate = upload_to_cloud(filepath)
+        result = asr.getSpeechToText(filepath, frame_rate)
+        return json.dumps(uss.getUserStories(services, result))
+    return json.dumps(uss.getUserStories(services))
 
 if __name__ =="__main__":
     app.run(debug=True)

@@ -8,7 +8,7 @@ from google.cloud import storage
 import os
 import wave
 import regex as re
-from ..Firebase import FireBase as fb
+from Firebase import FireBase as fb
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "ASRModule/credentials.json"
 
@@ -18,12 +18,6 @@ def getSpeechToText(audio_filename, frame_rate, projectTitle, domain, actors, me
     audioKeywords.extend(actors)
     json_result = google_transcribe(audio_filename, frame_rate, audioKeywords)
     return json_result
-
-def mp3_to_wav(audio_file_name):
-    if audio_file_name.split('.')[1] == 'mp3':    
-        sound = AudioSegment.from_mp3(audio_file_name)
-        audio_file_name = audio_file_name.split('.')[0] + '.wav'
-        sound.export(audio_file_name, format="wav")
 
 def stereo_to_mono(audio_file_name):
     sound = AudioSegment.from_wav(audio_file_name)
@@ -47,31 +41,29 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 
     blob.upload_from_filename(source_file_name)
 
-def upload_to_cloud(audioFullpath):
-    audio_filename = re.findall("[.\w]+", audioFullpath)[-1]
-    mp3_to_wav(audioFullpath)
+def upload_to_cloud(audioFullpath, audio_filename):
     frame_rate, channels = frame_rate_channel(audioFullpath)
     
     if channels > 1:
         stereo_to_mono(audioFullpath)
-    
+
+    framerate = {
+        'framerate': frame_rate
+    }
+    result = json.dumps(framerate, sort_keys=True,
+                        indent=4, separators=(',', ': '))
+
+    f = open('..Firebase/framerate.json', "a")
+    f.write(result)
+    f.close()
+    fb.setFrameRate()
+
     print("Uploading audio commented")
     # Parameter 1: bucket name, Parameter 2: source filename, Parameter 3: destination blob name
     upload_blob(bucketname, audioFullpath, audio_filename)  # Uploading audio file in google cloud
     
     # Saving frame rate in database for later use
-    framerate = {
-        'meetingID': id,
-        'framerate': frame_rate
-    }
-    result = json.dumps(framerate, sort_keys=True,
-                                indent=4, separators=(',', ': '))
-    
-    f = open('..Firebase/framerate.json', "a")
-    f.write(result)
-    f.close()
-    fb.setFrameRate()
-    return
+    return 1
     
 def delete_blob(bucket_name, blob_name):
     """Deletes a blob from the bucket."""

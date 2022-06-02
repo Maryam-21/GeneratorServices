@@ -1,8 +1,8 @@
 import spacy 
 import regex as re
 
-stopwords = set(w.rstrip() for w in open('stopwords.txt'))
-nlp = spacy.load('en_core_web_md', disable=['ner', 'textcat'])
+stopwords = set(w.rstrip() for w in open('./ServicesModule/stopwords.txt'))
+nlp = spacy.load('en_core_web_sm', disable=['ner', 'textcat'])
 
 def getUserStories(services):
     text = open("spotify_try.txt", mode='r').read()
@@ -117,4 +117,4 @@ def rule_final(text):
                     return "half way"
     return 0
 
-getUserStories()
+#getUserStories()
