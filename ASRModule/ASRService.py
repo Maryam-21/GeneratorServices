@@ -45,7 +45,8 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 
     blob.upload_from_filename(source_file_name)
 
-def upload_to_cloud(audioFullpath, audio_filename):
+def upload_to_cloud(audioFullpath):
+    audio_filename = re.findall("[.\w]+", audioFullpath)[-1]
     frame_rate, channels = frame_rate_channel(audioFullpath)
     
     if channels > 1:
