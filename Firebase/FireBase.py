@@ -17,9 +17,9 @@ def setTranscripts():
 
 	open('./Firebase/Transcripts.json', 'w').close()
 
-def getTranscripts(MeetingID):
+def getTranscripts(MeetingTitle):
 	ref = db.reference("/Stamps")
-	stamps = ref.order_by_child("meetingID").equal_to(MeetingID).get()
+	stamps = ref.order_by_child("meetingTitle").equal_to(MeetingTitle).get()
 	values = list(stamps.items())
 	stamps = values[0][1]['timeStamps']
 	return stamps #type of stamps (OrderedDictionary)

@@ -19,13 +19,19 @@ def AssignTimestamps(servicesdetails, stamps):
                     max = sent1.similarity(sent2)
             if serviceKey in out.keys():
                 out[serviceKey].append({
-                "service" : sent,
-                "stamp" : index  
+                "ServiceDetailString" : sent,
+                "Timestamp" : str(index)
             })
             else:
                 out[serviceKey] = [{
-                "service" : sent,
-                "stamp" : index        
+                "ServiceDetailString" : sent,
+                "Timestamp" : str(index)
             }]
-    print(out)
-    return out
+    payload = []
+    for t in out.keys():
+        payload.append({
+            "serviceTitle": t,
+            "serviceDetails": out[t]
+        })
+    print(payload)
+    return payload

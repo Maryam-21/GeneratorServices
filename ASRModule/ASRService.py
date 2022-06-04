@@ -53,7 +53,7 @@ def upload_to_cloud(audioFullpath, audio_filename):
 
     print("Uploading audio commented")
     # Parameter 1: bucket name, Parameter 2: source filename, Parameter 3: destination blob name
-    upload_blob(bucketname, audioFullpath, audio_filename)  # Uploading audio file in google cloud
+    #upload_blob(bucketname, audioFullpath, audio_filename)  # Uploading audio file in google cloud
     return frame_rate
 
 def delete_blob(bucket_name, blob_name):

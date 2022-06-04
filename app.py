@@ -30,14 +30,14 @@ def get_meeting_script():
     d = request.json["domain"]
     a = request.json["actors"]
     m = request.json["meetingTitle"]
-    id = 4#request.json["meetingID"]
-    frame_rate = upload_to_cloud(filepath)
+    id = 7#request.json["meetingID"]
+    frame_rate = asr.upload_to_cloud(filepath, "nour_meeting.wav")
     #filepath = "ASRModule/audio_wav/spotify_meeting.wav"  # ex. "ASRModule/audio_wav/batoul_meeting.wav"
     #frame_rate = fb.getFrameRate(id)
     result = asr.getSpeechToText(filepath, frame_rate, p, d, a, m)
-
+    print(result)
     timeStamps = {
-        'meetingID': id,
+        'meetingTitle': m,
         'timeStamps': result['sentsTimeStamp']
     }
 
@@ -47,7 +47,7 @@ def get_meeting_script():
     f.write(txtTimeStamps)
     f.close()
     fb.setTranscripts()
-    response = json.dumps(result['transcript'],indent=4)
+    response = result['transcript']
     return response
 
 #get Services
@@ -55,8 +55,10 @@ def get_meeting_script():
 def get_services():
     meetingscript = request.json['meetingscript']
     actors = request.json['actors']
-    meetingID = request.json['meetingID']
-    timeStamps = fb.getTranscripts(meetingID)
+    meetingTitle = request.json['meetingTitle']
+    #projectID = request.json['projectID']
+    firebaseID = meetingTitle
+    timeStamps = fb.getTranscripts(firebaseID)
     return json.dumps(sds.do(meetingscript, actors, timeStamps))
 
 #get stories
@@ -65,10 +67,14 @@ def get_user_stories():
     services = request.json['services']
     filepath = request.json['filepath']
     if filepath:
-        frame_rate = upload_to_cloud(filepath)
+        print(services)
+        frame_rate = asr.upload_to_cloud(filepath, "nour_meeting.wav")
         result = asr.getSpeechToText(filepath, frame_rate)
         return json.dumps(uss.getUserStories(services, result))
-    return json.dumps(uss.getUserStories(services))
+    print(services)
+    resp = json.dumps(uss.getUserStories(services))
+    print(resp)
+    return resp
 
 if __name__ =="__main__":
     app.run(debug=True)
