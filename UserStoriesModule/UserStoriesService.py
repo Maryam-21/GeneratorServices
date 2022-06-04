@@ -10,10 +10,7 @@ def getUserStories(services, text=''):
         stories.append(FormatService(s))
 
     if text == '':
-        result = {
-            "stories": stories
-        }
-        return result
+        return stories
     
     text = text.lower()
     text = re.sub("[.]",'.\n',str(text))
