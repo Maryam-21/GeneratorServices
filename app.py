@@ -31,7 +31,7 @@ def get_meeting_script():
     a = request.json["actors"]
     m = request.json["meetingTitle"]
     id = 7#request.json["meetingID"]
-    frame_rate = asr.upload_to_cloud(filepath, "nour_meeting.wav")
+    frame_rate = asr.upload_to_cloud(filepath)
     #filepath = "ASRModule/audio_wav/spotify_meeting.wav"  # ex. "ASRModule/audio_wav/batoul_meeting.wav"
     #frame_rate = fb.getFrameRate(id)
     result = asr.getSpeechToText(filepath, frame_rate, p, d, a, m)
@@ -68,7 +68,7 @@ def get_user_stories():
     filepath = request.json['filepath']
     if filepath:
         print(services)
-        frame_rate = asr.upload_to_cloud(filepath, "nour_meeting.wav")
+        frame_rate = asr.upload_to_cloud(filepath)
         result = asr.getSpeechToText(filepath, frame_rate)
         return json.dumps(uss.getUserStories(services, result))
     print(services)

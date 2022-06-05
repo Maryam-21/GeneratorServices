@@ -5,6 +5,7 @@ nlp = spacy.load('en_core_web_sm', disable=['ner', 'textcat'])
 
 def getUserStories(services, text=''):
     stories = []
+    #text = open("spotify_try.txt", mode='r').read()
     for s in services:
         stories.append(FormatService(s))
 
