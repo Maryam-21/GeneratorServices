@@ -1,7 +1,6 @@
 import spacy 
 import regex as re
 
-stopwords = set(w.rstrip() for w in open('./ServicesModule/stopwords.txt'))
 nlp = spacy.load('en_core_web_sm', disable=['ner', 'textcat'])
 
 def getUserStories(services, text=''):
@@ -11,7 +10,10 @@ def getUserStories(services, text=''):
         stories.append(FormatService(s))
 
     if text == '':
-        return stories
+        result = {
+            "stories": stories
+        }
+        return result
     
     text = text.lower()
     text = re.sub("[.]",'.\n',str(text))
@@ -41,18 +43,7 @@ def getUserStories(services, text=''):
                 nexta = True
             elif rule_final(sent):
                 acceptanceCriteria.append(sent)
-
-    '''
-    # Output
-    print("User stories: ")
-    print(*stories, sep='\n')
-    print()
-    print("preconditions: ")
-    print(*pre, sep='\n')
-    print()
-    print("acceptance criteria")
-    print(*acc, sep='\n')
-    '''
+    
     result = {
         "stories": stories,
         "preconditions": preconditions,
@@ -106,6 +97,3 @@ def rule_final(text):
                 if (subtok.dep_ in ['dobj','attr','prep']) and (subtok.pos_ in ['NOUN', 'PROPN','ADP']):
                     return "half way"
     return 0
-
-#getUserStories()
-

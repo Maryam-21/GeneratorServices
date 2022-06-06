@@ -7,8 +7,6 @@ from google.cloud import storage
 import os
 import wave
 import regex as re
-from Firebase import FireBase as fb
-
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]= "ASRModule/credentials.json"
 
