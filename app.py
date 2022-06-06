@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask import request
 from ASRModule import ASRService as asr
 from ServicesModule import ServiceDetailsService as sds
+from ServicesModule import ConflictDetection as cd
 from UserStoriesModule import UserStoriesService as uss
 from Firebase import FireBase as fb
 from ServicesModule import data
@@ -56,9 +57,9 @@ def get_services():
     meetingscript = request.json['meetingscript']
     actors = request.json['actors']
     meetingTitle = request.json['meetingTitle']
-    #projectID = request.json['projectID']
     firebaseID = meetingTitle
     timeStamps = fb.getTranscripts(firebaseID)
+
     return json.dumps(sds.do(meetingscript, actors, timeStamps))
 
 #get stories
@@ -71,10 +72,18 @@ def get_user_stories():
         frame_rate = asr.upload_to_cloud(filepath)
         result = asr.getSpeechToText(filepath, frame_rate)
         return json.dumps(uss.getUserStories(services, result))
-    print(services)
     resp = json.dumps(uss.getUserStories(services))
-    print(resp)
     return resp
+
+@app.route("/detectConflicts", methods=['GET'])
+def detect_conflict():
+    meetingID = request.json['meetingID']
+    Details = request.json['details']
+    Services = request.json['services']
+    MeetingIDs = request.json['meetingIDs']
+    ServiceIDs = request.json['serviceIDs']
+
+    return json.dumps(cd.detect_conflicts(meetingID, Details, Services, MeetingIDs, ServiceIDs))
 
 if __name__ =="__main__":
     app.run(debug=True)

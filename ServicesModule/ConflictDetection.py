@@ -1,7 +1,11 @@
 from importlib_metadata import Pair
 import spacy
 from nltk.corpus import wordnet
-# nlp = spacy.load('en')
+from numpy import unicode
+spacy.load('en_core_web_sm')
+import nltk
+nltk.download('wordnet')
+nltk.download('omw-1.4')
 from spacy import displacy
 from collections import Counter
 import en_core_web_sm
@@ -12,15 +16,7 @@ from collections import defaultdict
 
 from pprint import pprint
 
-from flask import Flask
-from flask import request
-
-import json
-
-app = Flask(__name__)
-
 _do_print_debug_info = False
-
 
 def _print_table(rows):
     col_widths = [max(len(s) for s in col) for col in zip(*rows)]
@@ -49,7 +45,6 @@ def print_parse_info(nlp, sent):
         spacy.load(), in other words, it's the callable instance of a spacy
         language model.
     """
-
     unicode_type = unicode if sys.version_info[0] < 3 else str
     assert type(sent) is unicode_type
     # Parse our sentence.
@@ -419,20 +414,7 @@ def detect_conflicts(meetingID, Details, Services, MeetingIDs, ServiceIDs):
     return finalList
 
 
-@app.route("/")
-def hello_world():
-    return "Hello World"
 
-
-@app.route("/detectConflicts", methods=['GET'])
-def detect_conflict():
-    meetingID = request.json['meetingID']
-    Details = request.json['details']
-    Services = request.json['services']
-    MeetingIDs = request.json['meetingIDs']
-    ServiceIDs = request.json['serviceIDs']
-
-    return json.dumps(detect_conflicts(meetingID, Details, Services, MeetingIDs, ServiceIDs))
 
 
 
