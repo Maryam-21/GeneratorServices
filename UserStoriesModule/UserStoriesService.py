@@ -11,7 +11,9 @@ def getUserStories(services, text=''):
 
     if text == '':
         result = {
-            "stories": stories
+            "stories": stories,
+            "preconditions": [],
+            "acceptanceCriteria": []
         }
         return result
     

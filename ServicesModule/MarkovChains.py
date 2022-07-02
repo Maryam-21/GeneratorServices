@@ -14,8 +14,8 @@ from nltk.corpus import stopwords
 import random
 
 file_path = "req.txt"
-actors = ["user", "system", "spotify", "profile", "organizer", "users"]
-verbs = ["should", "could", "can", "shall", "must", "would", "will", "to", "who"]
+actors = ["user", "system", "spotify", "profile", "organizer", "users", "company", "customer", "subscriber"]
+verbs = ["should", "could", "can", "shall", "must", "would", "will", "to", "who", "is", "be"]
 
 
 def read_file(file_path):
@@ -90,12 +90,13 @@ def generate_service(markov_model, limit=100, start='the'):
     srvs = ""
     srvs += curr_state + " "
     while n < limit:
-        next_state = random.choices(list(markov_model[curr_state].keys()),
-                                    list(markov_model[curr_state].values()))
+        if random.choices(list(markov_model[curr_state].keys()), list(markov_model[curr_state].values())):
+            next_state = random.choices(list(markov_model[curr_state].keys()),
+                                        list(markov_model[curr_state].values()))
 
-        curr_state = next_state[0]
-        srvs += curr_state + " "
-        n += 1
+            curr_state = next_state[0]
+            srvs += curr_state + " "
+            n += 1
     return srvs
 
 
@@ -135,7 +136,7 @@ def services(meetingscript, actorsstr="", limit=12):
             while i < x:
                 z += 1
                 # srvs_arr.append(generate_service(mm, start=seed, limit=limit))
-                servs = generate_service(mm, start=seed, limit=limit)
+                servs = generate_service(mm, start=seed, limit=12)
                 if servs not in srvs_arr:
                     srvs_arr.append(servs)
                     i += 1
@@ -146,7 +147,6 @@ def services(meetingscript, actorsstr="", limit=12):
             continue
     return srvs_arr
 
-
-#arr = services(meet,"x,y,z")
-#for s in arr:
+# arr = services(meet,"x,y,z")
+# for s in arr:
 #    print(s)

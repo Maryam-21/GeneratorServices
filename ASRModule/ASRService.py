@@ -81,7 +81,7 @@ def google_transcribe(audio_file_name, frame_rate, audioKeywords):
     operation = client.long_running_recognize(config=config, audio=audio)
     
     print("Waiting for operation to complete...")
-    response = operation.result(timeout=90)
+    response = operation.result(timeout=200)
     sentsTimeStamp = []
     transcript = ''
     for result in response.results:
@@ -98,5 +98,5 @@ def google_transcribe(audio_file_name, frame_rate, audioKeywords):
         'transcript': transcript,
         'sentsTimeStamp': sentsTimeStamp
     }
-    #delete_blob(bucket_name, audio_file_name)
+    #delete_blob(bucketname, audio_file_name)
     return result
